@@ -2,13 +2,13 @@ package main
 
 import (
 	"database/sql"
-	_ "errors"
+	
 	"fmt"
-	_ "net/http"
+	
 
 	"github.com/gin-gonic/gin"
 
-	_ "github.com/go-sql-driver/mysql"
+	
 )
 
 type Post struct {
@@ -31,21 +31,15 @@ func getPosts(c *gin.Context) {
 	State := "%" + c.Param("State") + "%"
 	Title := "%" + c.Param("Title") + "%"
 	Msg := "%" + c.Param("Msg") + "%"
-	fmt.Println(fname)
-	fmt.Println(Time)
-	fmt.Println(EndTime)
-	fmt.Println(Country)
-	fmt.Println(City)
-	fmt.Println(State)
-	fmt.Println(Title)
-	fmt.Println(Msg)
+
+	
 	if Time == "" {
 		Time = "1970-01-01 00:00:00"
 	}
 	if EndTime == "" {
 		EndTime = "2038-01-12 03:14:07"
 	}
-	// add to deb
+	// opens db and queries request
 	db, err := sql.Open("mysql", "root:your_current_password@tcp(127.0.0.1:3306)/capsule")
 
 	if err != nil {
@@ -91,14 +85,9 @@ func createPost(c *gin.Context) {
 	State := c.Param("State")
 	Title := c.Param("Title")
 	Msg := c.Param("Msg")
-	fmt.Println(fname)
-	fmt.Println(Country)
-	fmt.Println(City)
-	fmt.Println(State)
-	fmt.Println(Title)
-	fmt.Println(Msg)
 
-	// add to deb
+
+	// opens db and adds to it
 	db, err := sql.Open("mysql", "root:your_current_password@tcp(127.0.0.1:3306)/capsule")
 
 	if err != nil {
@@ -120,14 +109,7 @@ func createPost(c *gin.Context) {
 
 func main() {
 	router := gin.Default()
-	/**
-		db, err := sql.Open("mysql", "root:your_current_password@tcp(127.0.0.1:3306)/testdb")
 
-		if err != nil {
-			panic(err.Error)
-		}
-		defer db.Close()
-	**/
 	router.GET("/users/:fname/:Time/:EndTime/:Country/:City/:State/:Title/:Msg/:View", getPosts)
 	router.POST("/store-data/:fname/:Country/:City/:State/:Title/:Msg", createPost)
 
