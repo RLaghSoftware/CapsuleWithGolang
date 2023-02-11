@@ -1,0 +1,18 @@
+  
+   Creating database code (Notes):
+   
+   CREATE DATABASE capsule;
+
+   USE capsule
+   
+  CREATE TABLE POST
+    (
+       ID INT AUTO_INCREMENT PRIMARY KEY,
+        Name VARCHAR(50) DEFAULT 'Anonymous',
+       Title VARCHAR(50) DEFAULT 'UNTITLED',
+       created_at TIMESTAMP DEFAULT NOW(),
+       Message VARCHAR(1000),
+       City VARCHAR(20),
+      State VARCHAR(20),
+      Country VARCHAR(20)
+   ); 
