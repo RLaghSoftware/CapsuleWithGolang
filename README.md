@@ -1,4 +1,6 @@
 
+View Demo on my linkedIn! https://www.linkedin.com/feed/update/urn:li:activity:7022358895666896896/
+
 Using reactJS and GoLang, I built an application for journalists, historians, and entheusiasts alike. In the app, you can store files or messages anonymously under an alias name, and find them by searching for a specific entry.
 
 This is useful, as it allows anyone to secretly share information around the world instantly, and allows no deletion (other than by database owner), so no government official can try to hide history. Let's say, for example, there is injustice in a country where news isn't often reported. An individual can take an image and secretly upload it, and then the information is now public eye for news organizations to report on.
