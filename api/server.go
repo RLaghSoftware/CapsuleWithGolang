@@ -2,8 +2,14 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
+	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Post struct {
@@ -17,6 +23,16 @@ type Post struct {
 	Created_at string `json:"created_at"`
 }
 
+func getDBConnection() string {
+	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_NAME"),
+	)
+}
+
 func getPosts(c *gin.Context) {
 	fname := "%" + c.DefaultQuery("fname", "") + "%"
 	Time := c.DefaultQuery("Time", "1970-01-01 00:00:00")
@@ -27,7 +43,7 @@ func getPosts(c *gin.Context) {
 	Title := "%" + c.DefaultQuery("Title", "") + "%"
 	Msg := "%" + c.DefaultQuery("Msg", "") + "%"
 
-	db, err := sql.Open("mysql", "root:your_current_password@tcp(127.0.0.1:3306)/capsule")
+	db, err := sql.Open("mysql", getDBConnection())
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to connect to database"})
 		return
@@ -71,7 +87,7 @@ func createPost(c *gin.Context) {
 		return
 	}
 
-	db, err := sql.Open("mysql", "root:your_current_password@tcp(127.0.0.1:3306)/capsule")
+	db, err := sql.Open("mysql", getDBConnection())
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Failed to connect to database"})
 		return
@@ -89,9 +105,13 @@ func createPost(c *gin.Context) {
 }
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	router := gin.Default()
 	router.GET("/users", getPosts)
 	router.POST("/store-data", createPost)
 
-	router.Run("localhost:8080")
+	router.Run(os.Getenv("SERVER_ADDRESS"))
 }
