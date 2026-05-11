@@ -31,28 +31,34 @@ export default function ViewCapsule(input){
     let [inSearch, setSearch] = React.useState(false); //orignally, system is not searching for query, and user inputs filters
  
 
-    function search(){ //if filters are added, system uses axios.get to send parameters to the backend, logs results, and displays data
-        console.log(state.Time);
-        console.log(state.EndTime);
-        axios.get('/users/'+ state.fname + '/' + state.Time + '/' + state.EndTime + '/'+ state.Country + '/'+ state.City + '/'+ state.State + '/'+ state.Title + '/'+ state.Msg + '/'+ 'View') 
+    function search(){
+        axios.get('/users', {
+          params: {
+            fname: state.fname,
+            Time: state.Time,
+            EndTime: state.EndTime,
+            Country: state.Country,
+            City: state.City,
+            State: state.State,
+            Title: state.Title,
+            Msg: state.Msg,
+          }
+        })
         .then((response) => {
-          const data = response.data.data;
-          setState({ users: data }); 
+          const data = response.data.data || [];
+          setState({ users: data });
           console.log('Data has been received!!');
-          console.log(response);
-          console.log(response.data);
-    
-        })  
+        })
         .catch(() => {
           console.log('Error retrieving data!!!');
         });
-        
+
         setSearch(true)
     }
 
     function displayUsers (users) {
 
-        if (!users.length) return null;
+        if (!users || !users.length) return null;
       
 //html of a formatted map showcasing retrieved data users.Name, users.City, users.State, users.Country, users.Title, users.Message, users.created_at
       
@@ -63,7 +69,7 @@ export default function ViewCapsule(input){
             <h3>{users.Title} by {users.Name}</h3> 
             <p>Message: {users.Message}</p>
             <p>**************************************</p>
-            <p><font size="3"> <b>Posted on: {((users.created_at).replace("T", " at ")).replace(".000Z","-")} UTC</b></font> </p>
+            <p><font size="3"> <b>Posted on: {users.created_at ? ((users.created_at).replace("T", " at ")).replace(".000Z","-") : "Unknown"} UTC</b></font> </p>
             <p>________________________________________________________________________________________________________________________________________________________________________________________________</p>
             
            

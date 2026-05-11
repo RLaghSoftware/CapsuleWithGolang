@@ -4,35 +4,23 @@ import React, { useState } from "react";
 
 
 function submit(input, state){
-    
-   //fetch method to post data and add it into the local database after submit button is clicked
-     fetch('http://localhost:3000/store-data/'+ state.fname + '/'+ state.Country + '/'+ state.City + '/'+ state.State + '/'+ state.Title + '/'+ state.Msg, {
+     fetch('/store-data', {
       method: 'POST',
-     // headers: { 'Content-Type': 'application/json' },
-      // We convert the React state to JSON and send it as the POST body
-   /**  body: JSON.stringify({
-      Name: state.fname,
-      Title: state.Title,
-      Msg: state.Msg,
-      City: state.City,
-      State: state.State,
-      Country: state.Country
-    } 
-      
-      ) */
-
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        Name: state.fname,
+        Title: state.Title,
+        Message: state.Msg,
+        City: state.City,
+        State: state.State,
+        Country: state.Country
+      })
     })
-    
     .then(function(response) {
-      
-      console.log(response)
-      
-   //   return response.json();
+      console.log(response);
     });
      input.setPage("home");
-     alert("Posted as " + state.Title); //alerts user of post
-  
-     
+     alert("Posted as " + state.Title);
  }
 
 export default function AddToCapsule(input){

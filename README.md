@@ -25,7 +25,7 @@ Then run "npm install"
 
 Finally, run "npm start"
 
-run Node server.js
+run go run server.go
 
 The app should now be running on port 3000, and can be visited through a web browser.
 
